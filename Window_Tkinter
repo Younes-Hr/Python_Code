@@ -1,0 +1,102 @@
+import tkinter as tk
+
+# Function to center the window
+def center_window(window, width=900, height=400):
+    screen_width = window.winfo_screenwidth()
+    screen_height = window.winfo_screenheight()
+    x = (screen_width // 2) - (width // 2)
+    y = (screen_height // 2) - (height // 2)
+    window.geometry(f"{width}x{height}+{x}+{y}")
+
+# Function to handle window dragging
+def start_move(event):
+    global x, y
+    x = event.x
+    y = event.y
+
+def stop_move(event):
+    global x, y
+    x = None
+    y = None
+
+def on_move(event):
+    global x, y
+    deltax = event.x - x
+    deltay = event.y - y
+    root.geometry(f"+{root.winfo_x() + deltax}+{root.winfo_y() + deltay}")
+
+# Function to minimize the window
+def minimize_window():
+    print("Minimize button clicked")  # Debug statement
+    root.overrideredirect(False)
+    root.iconify()
+
+# Function to toggle maximize/restore the window
+def maximize_restore_window():
+    print("Maximize/Restore button clicked")  # Debug statement
+    if root.state() == 'zoomed':
+        root.state('normal')
+    else:
+        root.state('zoomed')
+
+# Functions to change button colors on hover
+def on_hover(event, button):
+    button['bg'] = '#01314d'
+
+def on_leave(event, button):
+    button['bg'] = '#01111d'
+
+# Function to re-apply custom title bar after deiconifying
+def on_deiconify(event):
+    root.overrideredirect(True)
+
+# Create the main window
+root = tk.Tk()
+root.overrideredirect(True)  # Remove the default title bar
+root.title("Custom Tkinter Window")
+
+# Bind the deiconify event
+root.bind("<Map>", on_deiconify)
+
+# Set the size and position of the window
+center_window(root)
+
+# Create a custom title bar frame
+title_bar = tk.Frame(root, bg="#01111d", relief="raised", bd=2)
+title_bar.pack(fill=tk.X)
+
+# Create a title label
+title_label = tk.Label(title_bar, text="Custom Tkinter Window", bg="#01111d", fg="white")
+title_label.pack(side=tk.LEFT, padx=10)
+
+# Create a close button
+close_button = tk.Button(title_bar, text="X", command=root.destroy, bg="#01111d", fg="white", bd=0)
+close_button.pack(side=tk.RIGHT, padx=5)
+
+# Create a maximize/restore button
+maximize_button = tk.Button(title_bar, text="☐", command=maximize_restore_window, bg="#01111d", fg="white", bd=0)
+maximize_button.pack(side=tk.RIGHT, padx=5)
+
+# Create a minimize button
+minimize_button = tk.Button(title_bar, text="━", command=minimize_window, bg="#01111d", fg="white", bd=0)
+minimize_button.pack(side=tk.RIGHT, padx=5)
+
+# Bind hover events to buttons
+close_button.bind("<Enter>", lambda event, btn=close_button: on_hover(event, btn))
+close_button.bind("<Leave>", lambda event, btn=close_button: on_leave(event, btn))
+maximize_button.bind("<Enter>", lambda event, btn=maximize_button: on_hover(event, btn))
+maximize_button.bind("<Leave>", lambda event, btn=maximize_button: on_leave(event, btn))
+minimize_button.bind("<Enter>", lambda event, btn=minimize_button: on_hover(event, btn))
+minimize_button.bind("<Leave>", lambda event, btn=minimize_button: on_leave(event, btn))
+
+# Bind events for dragging the window
+title_bar.bind("<Button-1>", start_move)
+title_bar.bind("<ButtonRelease-1>", stop_move)
+title_bar.bind("<B1-Motion>", on_move)
+
+# Create the main content frame
+content_frame = tk.Frame(root, bg="#152036")
+content_frame.pack(expand=True, fill=tk.BOTH)
+
+# Start the Tkinter event loop
+root.mainloop()
