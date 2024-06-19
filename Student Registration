@@ -1,0 +1,112 @@
+import tkinter as tk
+from tkinter import filedialog, messagebox
+
+def upload_photo():
+    file_path = filedialog.askopenfilename()
+    if file_path:
+        messagebox.showinfo("Upload", f"Photo uploaded: {file_path}")
+        # Here you can add code to display the selected photo
+    else:
+        messagebox.showwarning("Upload", "No file selected.")
+
+def update_info():
+    messagebox.showinfo("Update", "Feature under development")
+
+def save_info():
+    messagebox.showinfo("Save", "Feature under development")
+
+def reset_entries():
+    clear_student_entries()
+    clear_parent_entries()
+
+def exit_program():
+    if messagebox.askokcancel("Exit", "Are you sure you want to exit?"):
+        root.destroy()
+
+def clear_student_entries():
+    entry_first_name.delete(0, tk.END)
+    entry_last_name.delete(0, tk.END)
+    entry_dob.delete(0, tk.END)
+    entry_gender.delete(0, tk.END)
+    entry_grade.delete(0, tk.END)
+    entry_address.delete(0, tk.END)
+    entry_email.delete(0, tk.END)
+    entry_allergies.delete(0, tk.END)
+
+def clear_parent_entries():
+    entry_parent_first_name.delete(0, tk.END)
+    entry_parent_last_name.delete(0, tk.END)
+    entry_parent_phone.delete(0, tk.END)
+    entry_parent_email.delete(0, tk.END)
+    entry_parent_address.delete(0, tk.END)
+
+root = tk.Tk()
+root.title("Student Registration System")
+
+# Student Information Frame
+student_frame = tk.LabelFrame(root, text="Student Information")
+student_frame.grid(row=0, column=0, padx=10, pady=5, sticky=tk.W)
+
+student_labels = ["First Name", "Last Name", "Date of Birth", "Gender", "Grade Level", "Address", "Email", "Allergies or Medical Conditions"]
+student_entries = {}
+
+for i, label_text in enumerate(student_labels):
+    label = tk.Label(student_frame, text=label_text)
+    label.grid(row=i, column=0, padx=10, pady=5, sticky=tk.W)
+    entry = tk.Entry(student_frame)
+    entry.grid(row=i, column=1, padx=10, pady=5)
+    student_entries[label_text] = entry
+
+entry_first_name = student_entries["First Name"]
+entry_last_name = student_entries["Last Name"]
+entry_dob = student_entries["Date of Birth"]
+entry_gender = student_entries["Gender"]
+entry_grade = student_entries["Grade Level"]
+entry_address = student_entries["Address"]
+entry_email = student_entries["Email"]
+entry_allergies = student_entries["Allergies or Medical Conditions"]
+
+# Parent Information Frame
+parent_frame = tk.LabelFrame(root, text="Parent Information")
+parent_frame.grid(row=0, column=1, padx=10, pady=5, sticky=tk.W)
+
+parent_labels = ["First Name", "Last Name", "Phone Number", "Email", "Address"]
+parent_entries = {}
+
+for i, label_text in enumerate(parent_labels):
+    label = tk.Label(parent_frame, text=label_text)
+    label.grid(row=i, column=0, padx=10, pady=5, sticky=tk.W)
+    entry = tk.Entry(parent_frame)
+    entry.grid(row=i, column=1, padx=10, pady=5)
+    parent_entries[label_text] = entry
+
+entry_parent_first_name = parent_entries["First Name"]
+entry_parent_last_name = parent_entries["Last Name"]
+entry_parent_phone = parent_entries["Phone Number"]
+entry_parent_email = parent_entries["Email"]
+entry_parent_address = parent_entries["Address"]
+
+# Picture Frame
+picture_frame = tk.LabelFrame(root, text="Student Picture")
+picture_frame.grid(row=1, columnspan=2, padx=10, pady=5, sticky=tk.W)
+
+# Buttons
+button_frame = tk.Frame(root)
+button_frame.grid(row=2, columnspan=2, pady=10)
+
+upload_button = tk.Button(button_frame, text="Upload", command=upload_photo, width=10)
+upload_button.grid(row=0, column=0, padx=5)
+
+update_button = tk.Button(button_frame, text="Update", command=update_info, width=10)
+update_button.grid(row=0, column=1, padx=5)
+
+save_button = tk.Button(button_frame, text="Save", command=save_info, width=10)
+save_button.grid(row=0, column=2, padx=5)
+
+reset_button = tk.Button(button_frame, text="Reset", command=reset_entries, width=10)
+reset_button.grid(row=0, column=3, padx=5)
+
+exit_button = tk.Button(button_frame, text="Exit", command=exit_program, width=10)
+exit_button.grid(row=0, column=4, padx=5)
+
+root.mainloop()
